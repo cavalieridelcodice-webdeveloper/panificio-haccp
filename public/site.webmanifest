@@ -4,7 +4,7 @@
   "description": "Gestione Ingredienti e Allergeni",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8fafc",
+  "background_color": "#ffffff",
   "theme_color": "#f8fafc",
   "orientation": "portrait",
   "icons": [
@@ -21,10 +21,10 @@
       "purpose": "any"
     },
     {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ]
 }
