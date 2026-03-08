@@ -11,11 +11,21 @@ import { UserDashboard } from './components/UserDashboard';
 import { AllergenCatalog } from './components/AllergenCatalog';
 import { ComplianceView } from './components/ComplianceView';
 import { AdminPanel } from './components/AdminPanel';
+import { SplashScreen } from './components/SplashScreen';
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // 0. SPLASH SCREEN TIMER
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // 1. SCORRIMENTO FLUIDO
   useEffect(() => {
@@ -28,7 +38,7 @@ export default function App() {
       try {
         setIsLoading(true);
         const result = await db.run(sql`SELECT * FROM products ORDER BY last_updated DESC`);
-        
+
         // Trasformiamo i risultati da righe di database a oggetti Product
         const formattedProducts = result.rows.map(row => ({
           id: String(row.id),
@@ -96,6 +106,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+      {showSplash && <SplashScreen />}
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} onPrint={() => window.print()} />
 
       <main className="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
@@ -108,16 +119,16 @@ export default function App() {
             {activeTab === 'home' && (
               <HomeView onExplore={() => setActiveTab('products')} />
             )}
-            
+
             {activeTab === 'products' && <UserDashboard products={products} />}
-            
+
             {activeTab === 'allergens' && <AllergenCatalog />}
-            
+
             {activeTab === 'compliance' && <ComplianceView />}
-            
+
             {activeTab === 'admin' && (
-              <AdminPanel 
-                products={products} 
+              <AdminPanel
+                products={products}
                 onSave={handleSaveProduct}
                 onDelete={handleDeleteProduct}
               />
