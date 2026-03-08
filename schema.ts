@@ -12,6 +12,7 @@ export const products = sqliteTable('products', {
   name: text('name').notNull(),
   description: text('description'),
   category: text('category').notNull(),
+  allergens: text('allergens').notNull().default('[]'), // Stringa JSON per compatibilità
   lastUpdated: text('last_updated').notNull(),
 });
 
